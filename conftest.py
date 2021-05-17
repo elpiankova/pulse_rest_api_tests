@@ -15,3 +15,34 @@ def book(base_url):
     yield book_body_resp
     resp = requests.delete(f'{base_url}/books/{book_body_resp["id"]}')
     # print(resp.status_code)
+
+
+@pytest.fixture()
+def delete_role(base_url):
+    d = {}
+    yield d
+    if "id" in d:
+        requests.delete(f'{base_url}/roles/{d["id"]}')
+
+role_payload_list =[
+    {
+        "name": "Polonius",
+        "type": "Secondary",
+        "level": 100,
+    },
+    {
+        "name": "#@$#$%^",
+        "type": "%$^&*(",
+        "level": 2,
+    },
+    {
+        "name": "23456789",
+        "type": "345678",
+        "level": 2,
+    }
+]
+
+
+@pytest.fixture(params=role_payload_list, ids=[str(data) for data in role_payload_list])
+def role_payload(request):
+    return request.param
