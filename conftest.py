@@ -7,6 +7,19 @@ def base_url():
     yield "http://pulse-rest-testing.herokuapp.com/"
 
 
+@pytest.fixture(scope="module")
+def session():
+    return requests.Session()
+
+
+@pytest.fixture(scope="session")
+def token(base_url):
+    r_token = requests.post(f'{base_url}/api-token-auth/',
+                            data={'username': 'admin', 'password': 'pass'})
+    token = r_token.json()['token']
+    return token
+
+
 @pytest.fixture()
 def book(base_url):
     book_data = {"title": "New", "author": "New"}
