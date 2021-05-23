@@ -22,8 +22,7 @@ def test_book_create(base_url, payload):
 
 
 @pytest.mark.parametrize("payload", payload_list, ids=(str(data) for data in payload_list))
-def test_book_create2(base_url, payload):
-    resp = requests.post(f'{base_url}/books', data=payload)
-    assert 'id' in resp.json()
+def test_book_update(book, base_url, payload):
+    resp = requests.put(f'{base_url}/books/{book["id"]}', data=payload)
     for key in payload:
         assert payload[key] == resp.json()[key]
